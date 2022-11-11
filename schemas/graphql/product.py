@@ -1,7 +1,9 @@
 from strawberry import type
 
 
-@strawberry.type
-class User:
+@type
+class Product:
+    sku: str
     name: str
-    age: int
+    price: float
+    brand: str

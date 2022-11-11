@@ -1,8 +1,9 @@
 from strawberry import type, field
-from
+from schemas.graphql.product import Product
+
 
 @type
 class Query:
     @field
-    def user(self) -> User:
-        return User(name="Patrick", age=100)
+    def product(self) -> Product:
+        return Product(sku="test", name="test", price=1.2, brand="lacteo")

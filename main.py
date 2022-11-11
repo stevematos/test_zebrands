@@ -1,25 +1,59 @@
-import strawberry
-from fastapi import FastAPI
-from strawberry.asgi import GraphQL
+from fastapi import FastAPI, Depends, Header
+from strawberry import Schema
+from strawberry.fastapi import GraphQLRouter
+
+from config.environment import config_env
+# from metadata.Tags import Tags
+from config.database import get_db_connection
+from models.base_model import init
+from schemas.graphql.query import Query
+from schemas.graphql.mutation import Mutation
+
+# Application Environment Configuration
+env = config_env()
+
+# Core Application Instance
+app = FastAPI(
+    title=env.APP_NAME,
+    version=env.API_VERSION,
+    # openapi_tags=Tags,
+)
+
+#
+# def authorization_dependency(
+#     authorization: str = Header(None)
+# ) -> str:
+#     # ===> need to get request here, to get request header
+#     return authorization
 
 
-@strawberry.type
-class User:
-    name: str
-    age: int
+async def get_context(
+    db=Depends(get_db_connection)
+):
+    return {
+        "db": db,
+    }
 
 
-@strawberry.type
-class Query:
-    @strawberry.field
-    def user(self) -> User:
-        return User(name="Patrick", age=100)
+# GraphQL Schema and Application Instance
+schema = Schema(
+    query=Query,
+    mutation=Mutation,
 
+)
 
-schema = strawberry.Schema(query=Query)
+graphql = GraphQLRouter(
+    schema,
+    graphiql=env.DEBUG_MODE,
+    context_getter=get_context,
+)
 
+# Integrate GraphQL Application to the Core one
+app.include_router(
+    graphql,
+    prefix="/graphql",
+    include_in_schema=False,
+)
 
-graphql_app = GraphQL(schema)
-app = FastAPI()
-app.add_route("/graphql", graphql_app)
-app.add_websocket_route("/graphql", graphql_app)
+# Initialise Data Model Attributes
+init()
