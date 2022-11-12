@@ -7,7 +7,7 @@ from config.environment import config_env
 from config.database import get_db_connection
 from models.base_model import init
 from schemas.graphql.query import Query
-from schemas.graphql.mutation import Mutation
+from gql.mutation import Mutation
 
 # Application Environment Configuration
 env = config_env()
@@ -19,19 +19,20 @@ app = FastAPI(
     # openapi_tags=Tags,
 )
 
-#
-# def authorization_dependency(
-#     authorization: str = Header(None)
-# ) -> str:
-#     # ===> need to get request here, to get request header
-#     return authorization
+
+def authorization_dependency(
+    session_token: str = Header(None)
+) -> str:
+    return session_token
 
 
 async def get_context(
-    db=Depends(get_db_connection)
+    db=Depends(get_db_connection),
+    session_token=Depends(authorization_dependency)
 ):
     return {
         "db": db,
+        "session_token": session_token
     }
 
 

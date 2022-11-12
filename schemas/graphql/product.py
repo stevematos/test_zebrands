@@ -1,9 +1,16 @@
-from strawberry import type
+from strawberry import type, input
 
 
-@type
-class Product:
+@input
+class ProductInput:
     sku: str
     name: str
     price: float
     brand: str
+
+
+@type
+class ProductResponse:
+    sku: str
+    name: str
+    price: float

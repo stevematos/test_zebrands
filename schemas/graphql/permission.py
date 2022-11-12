@@ -1,20 +1,27 @@
 import typing
 
-from starlette.requests import Request
-from starlette.websockets import WebSocket
 from strawberry.permission import BasePermission
 from strawberry.types import Info
 
-from services.auth import authenticate
+from services.permission import (
+    authenticate,
+    is_admin,
+)
 
 
 class IsAuthenticated(BasePermission):
     message = "User is not authenticated"
 
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
-        request: typing.Union[Request, WebSocket] = info.context["request"]
+        if session_token := info.context["session_token"]:
+            return authenticate(info.context['db'], session_token)
+        return False
 
-        if "session-token" in request.headers:
-            return authenticate(info.context['db'], request.headers['session-token'])
 
+class IsAdmin(BasePermission):
+    message = "User is not admin"
+
+    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
+        if session_token := info.context["session_token"]:
+            return is_admin(info.context['db'], session_token)
         return False
