@@ -57,17 +57,18 @@ def updated_product(db: Session, product: ProductSchema, email: str, user_id: in
         raise ProductNotFound(product.sku)
 
     update_data = clean_dict(product.__dict__)
-
     diff_data = diff_dict(product_data.normalize(), update_data)
-    _send_email_for_change_product(
-        ProductChange(
-            email=email,
-            user_id=user_id,
-            sku=product_data.sku,
-            product_id=product_data.id,
-            product_change=diff_data
+
+    if diff_data:
+        _send_email_for_change_product(
+            ProductChange(
+                email=email,
+                user_id=user_id,
+                sku=product_data.sku,
+                product_id=product_data.id,
+                product_change=diff_data
+            )
         )
-    )
 
     update_product(db, product_data.id, Product(**update_data))
     return UpdateProductResponse(**product_data.normalize())
