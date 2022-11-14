@@ -23,6 +23,7 @@ class EnvironmentSettings(BaseSettings):
     MINUTES_PER_SESSION: float
     JWT_KEY: str
     JWT_ENCRYPT_ALGO: str = "HS256"
+    AWS_SES_ENDPOINT_URL: str = None
 
     class Config:
         env_file = get_env_filename()

@@ -22,6 +22,11 @@ def _validate_user(db: Session, payload: dict) -> bool:
     return True
 
 
+def _save_data_info(info: Info, decoded_jwt: dict):
+    info.context['email'] = decoded_jwt['email']
+    info.context['user_id'] = decoded_jwt['user_id']
+
+
 def _is_admin(db: Session, email: str) -> bool:
     if (user_data := get_user_by_email(db, email)) and user_data.rol == RolEnum.admin:
         return True
@@ -37,7 +42,7 @@ def authenticate(info: Info, session_token: str) -> bool:
     if not _validate_user(info.context['db'], decoded_jwt):
         return False
 
-    info.context['email'] = decoded_jwt['email']
+    _save_data_info(info, decoded_jwt)
 
     return True
 

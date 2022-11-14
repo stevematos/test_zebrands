@@ -7,6 +7,10 @@ def get_user_by_email(db: Session, email: str) -> User:
     return db.query(User).filter(User.email == email, User.is_active).one()
 
 
+def get_user_by_id(db: Session, _id: int) -> User:
+    return db.query(User).filter(User.id == _id, User.is_active).one()
+
+
 def create_user(db: Session, user: User) -> User:
     db.add(user)
     db.commit()

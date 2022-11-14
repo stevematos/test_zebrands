@@ -13,6 +13,6 @@ class QueryProduct:
     @field(permission_classes=[IsAuthenticated])
     def get_product(self, info: Info,  sku: str) -> GetProductResult:
         try:
-            return get_product(info.context['db'], sku, info.context['email'])
+            return get_product(info.context['db'], sku, info.context['user_id'])
         except ProductNotFound as e:
             return ProductError(message=e.__str__())

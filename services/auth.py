@@ -18,4 +18,4 @@ def get_session_token(db: Session, email: str, password: str) -> str:
     ):
         raise UserIncorrect()
 
-    return create_jwt_with_params(email)
+    return create_jwt_with_params(email, user.id)

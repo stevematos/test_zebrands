@@ -5,3 +5,4 @@ uvicorn[standard]
 bcrypt
 pytest
 pyjwt
+boto3

@@ -13,6 +13,14 @@ class Product(TimestampedBase):
     price = Column(Float(8, 2), nullable=False)
     brand = Column(String(255))
 
+    def normalize(self):
+        return {
+            "name": self.name.__str__(),
+            "sku": self.sku.__str__(),
+            "price": self.price.__str__(),
+            "brand": self.brand.__str__()
+        }
+
 
 class ProductTracking(EntityBase):
     __tablename__ = "product_tracking"

@@ -7,3 +7,11 @@ class ProductSchema(BaseModel):
     name:  Optional[str] = None
     price: Optional[float] = None
     brand: Optional[str] = None
+
+
+class ProductChange(BaseModel):
+    email: str
+    sku: str
+    user_id: int
+    product_id: int
+    product_change: dict

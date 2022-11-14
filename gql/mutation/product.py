@@ -29,7 +29,7 @@ class MutationProduct:
     def update_product(self, info: Info, product: UpdateProductInput) -> UpdateProductResult:
         try:
             user_data = ProductSchema(**product.__dict__)
-            return updated_product(info.context['db'], user_data)
+            return updated_product(info.context['db'], user_data, info.context['email'], info.context['user_id'])
         except ProductNotFound as e:
             return ProductError(message=e.__str__())
 

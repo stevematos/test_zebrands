@@ -31,12 +31,14 @@ def check_password_hash(password: SecretStr, hashed_password: str) -> bool:
 
 def create_jwt_with_params(
     email: str,
+    user_id: int,
     min_per_session: float = config_env().MINUTES_PER_SESSION,
     secret_key: str = config_env().JWT_KEY,
 ):
     expiration = datetime.utcnow() + timedelta(minutes=min_per_session)
     payload = {
         "email": email,
+        "user_id": user_id,
         "exp": expiration,
     }
     return encode(
