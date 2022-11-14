@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from strawberry import input, type, enum, union, UNSET
+from strawberry import input, type, enum, union
 
 
 @enum
@@ -20,9 +20,10 @@ class CreateUserInput:
 
 @input
 class UpdateUserInput:
-    password: Optional[str] = UNSET
-    full_name: Optional[str] = UNSET
-    rol: Optional[RolEnumInput] = UNSET
+    email: str
+    password: Optional[str] = None
+    full_name: Optional[str] = None
+    rol: Optional[RolEnumInput] = None
 
 
 @type
@@ -39,9 +40,16 @@ class UpdateUserResponse:
 
 
 @type
+class DeleteUserResponse:
+    email: str
+    message: str
+
+
+@type
 class UserError:
     message: str
 
 
 CreateUserResult = union("CreateUserResult", (CreateUserResponse, UserError))
 UpdateUserResult = union("UpdateUserResult", (UpdateUserResponse, UserError))
+DeleteUserResult = union("DeleteUserResult", (DeleteUserResponse, UserError))

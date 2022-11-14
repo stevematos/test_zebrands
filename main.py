@@ -4,7 +4,7 @@ from strawberry.fastapi import GraphQLRouter
 
 from config.environment import config_env
 # from metadata.Tags import Tags
-from config.database import get_db_connection
+from config.database import get_db_connection, Engine
 from models.base_model import init
 from schemas.graphql.query import Query
 from gql.mutation import Mutation

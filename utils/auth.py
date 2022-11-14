@@ -7,7 +7,6 @@ from config.environment import config_env
 from datetime import datetime, timedelta
 
 from utils.tokens import encode, decode
-import jwt
 
 
 def hash_password(password: SecretStr) -> str:

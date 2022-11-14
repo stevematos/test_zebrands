@@ -4,7 +4,7 @@ from models.users import User
 
 
 def get_user_by_email(db: Session, email: str) -> User:
-    return db.query(User).filter(User.email == email).one()
+    return db.query(User).filter(User.email == email, User.is_active).one()
 
 
 def create_user(db: Session, user: User) -> User:
@@ -14,13 +14,12 @@ def create_user(db: Session, user: User) -> User:
     return user
 
 
-def update_user(db: Session, _id: int, user: User) -> User:
+def update_user(db: Session, _id: int, user: User):
     user.id = _id
     db.merge(user)
     db.commit()
-    return user
 
 
-def delete_user(db: Session, _id: int):
+def deactivate_user(db: Session, _id: int):
     db.query(User).filter(User.id == _id).update({'is_active': False})
     db.commit()

@@ -3,11 +3,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
 
 from models.users import User
-from queries.user import create_user, update_user, get_user_by_email
-from schemas.graphql.user import CreateUserResponse, UpdateUserResponse
+from queries.user import create_user, update_user, get_user_by_email, deactivate_user
+from schemas.graphql.user import CreateUserResponse, UpdateUserResponse, DeleteUserResponse
 from schemas.pydantic.user import UserSchema
 from utils.auth import hash_password
-from utils.exceptions import UserDuplicated, UserNotFound
+from config.exceptions import UserDuplicated, UserNotFound
+from utils.extras import clean_dict
 
 
 def add_user(db: Session, user: UserSchema) -> CreateUserResponse:
@@ -17,13 +18,11 @@ def add_user(db: Session, user: UserSchema) -> CreateUserResponse:
     except NoResultFound:
         pass
 
-    user.password = hash_password(SecretStr(user.password))
-    db_user = create_user(db, User(
-        email=user.email,
-        hashed_password=user.password,
-        full_name=user.full_name,
-        rol=user.rol.value
-    ))
+    create_data = user.__dict__
+    create_data['hashed_password'] = hash_password(SecretStr(create_data.pop('password')))
+
+    db_user = create_user(db, User(**create_data))
+
     return CreateUserResponse(
         email=db_user.email,
         full_name=db_user.full_name,
@@ -37,12 +36,26 @@ def updated_user(db: Session, user: UserSchema) -> UpdateUserResponse:
     except NoResultFound:
         raise UserNotFound()
 
-    db_user = update_user(db, user_data.id, User(
-        email=user.email,
-        full_name=user.full_name,
-        rol=user.rol.value
-    ))
+    update_data = clean_dict(user.__dict__)
+
+    if 'password' in update_data:
+        update_data['hashed_password'] = hash_password(SecretStr(update_data.pop('password')))
+
+    update_user(db, user_data.id, User(**update_data))
     return UpdateUserResponse(
-        full_name=db_user.full_name,
-        rol=db_user.rol
+        full_name=user_data.full_name,
+        rol=user_data.rol.value
+    )
+
+
+def deleted_user(db: Session, email: str) -> DeleteUserResponse:
+    try:
+        user_data = get_user_by_email(db, email)
+    except NoResultFound:
+        raise UserNotFound()
+
+    deactivate_user(db, user_data.id)
+    return DeleteUserResponse(
+        email=user_data.email,
+        message="User deleted successfully"
     )

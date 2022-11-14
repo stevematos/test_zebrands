@@ -10,7 +10,7 @@ from strawberry import (
 )
 
 from services.auth import get_session_token
-from utils.exceptions import UserNotFound, UserIncorrect
+from config.exceptions import UserNotFound, UserIncorrect
 
 
 @type

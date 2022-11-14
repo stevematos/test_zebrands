@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from config.constants import RolEnum
 from queries.user import get_user_by_email
@@ -10,8 +11,12 @@ from config.environment import config_env
 
 
 def _validate_user(db: Session, payload: dict) -> bool:
-    if not get_user_by_email(db, payload['email']):
+    try:
+        if not get_user_by_email(db, payload['email']):
+            return False
+    except NoResultFound:
         return False
+
     if datetime.utcnow().timestamp() >= payload['exp']:
         return False
     return True
