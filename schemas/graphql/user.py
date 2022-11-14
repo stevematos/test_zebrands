@@ -11,37 +11,42 @@ class RolEnumInput(Enum):
 
 
 @input
-class CreateUserInput:
+class UserInput:
     email: str
     password: str
     full_name: str
     rol: RolEnumInput
 
 
-@input
-class UpdateUserInput:
-    email: str
+class CreateUserInput(UserInput):
+    pass
+
+
+class UpdateUserInput(UserInput):
     password: Optional[str] = None
     full_name: Optional[str] = None
     rol: Optional[RolEnumInput] = None
 
 
 @type
-class CreateUserResponse:
+class UserResponse:
     email: str
     full_name: str
     rol: RolEnumInput
 
 
 @type
-class UpdateUserResponse:
-    full_name: str
-    rol: RolEnumInput
+class CreateUserResponse(UserResponse):
+    pass
 
 
 @type
-class DeleteUserResponse:
-    email: str
+class UpdateUserResponse(UserResponse):
+    pass
+
+
+@type
+class DeleteUserResponse(UserResponse):
     message: str
 
 

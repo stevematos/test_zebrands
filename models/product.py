@@ -1,5 +1,4 @@
 from models.base_model import TimestampedBase, EntityBase
-# from models.base_model import EntityBase
 
 from sqlalchemy import Column, ForeignKey, func
 from sqlalchemy import Integer, String, Float, DateTime

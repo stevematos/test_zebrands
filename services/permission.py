@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
-
+from strawberry.types import Info
 from config.constants import RolEnum
 from queries.user import get_user_by_email
 from utils.tokens import decode
@@ -28,14 +28,16 @@ def _is_admin(db: Session, email: str) -> bool:
     return False
 
 
-def authenticate(db: Session, session_token: str) -> bool:
+def authenticate(info: Info, session_token: str) -> bool:
     try:
         decoded_jwt = decode(session_token, config_env().JWT_KEY)
     except (jwt.ExpiredSignatureError, jwt.InvalidSignatureError, jwt.InvalidSignatureError, jwt.DecodeError):
         return False
 
-    if not _validate_user(db, decoded_jwt):
+    if not _validate_user(info.context['db'], decoded_jwt):
         return False
+
+    info.context['email'] = decoded_jwt['email']
 
     return True
 

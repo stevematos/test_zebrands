@@ -1,12 +1,38 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
 
-from models import Product
-from queries.product import get_product_by_sku, create_product, update_product, delete_product
-from schemas.graphql.product import CreateProductResponse, UpdateProductResponse, DeleteProductResponse
+from models import Product, ProductTracking
+from queries.product import get_product_by_sku, create_product, update_product, delete_product, create_product_tacking
+from queries.user import get_user_by_email
+from schemas.graphql.product import CreateProductResponse, UpdateProductResponse, DeleteProductResponse, \
+    GetProductResponse
 from schemas.pydantic.product import ProductSchema
 from config.exceptions import ProductDuplicated, ProductNotFound
 from utils.extras import clean_dict
+
+
+def get_product(db: Session, sku: str, email: str) -> GetProductResponse:
+    try:
+        product_data = get_product_by_sku(db, sku)
+    except NoResultFound:
+        raise ProductNotFound(sku)
+
+    user_data = get_user_by_email(db, email)
+
+    create_product_tacking(
+        db,
+        ProductTracking(
+            user_id=user_data.id,
+            product_id=product_data.id
+        )
+    )
+
+    return GetProductResponse(
+        sku=product_data.sku,
+        name=product_data.name,
+        price=product_data.price,
+        brand=product_data.brand
+    )
 
 
 def add_product(db: Session, product: ProductSchema) -> CreateProductResponse:
@@ -50,6 +76,9 @@ def deleted_product(db: Session, sku: str) -> DeleteProductResponse:
 
     delete_product(db, product_data.id)
     return DeleteProductResponse(
-        sku=sku,
+        sku=product_data.sku,
+        name=product_data.name,
+        price=product_data.price,
+        brand=product_data.brand,
         message="Product deleted successfully"
     )

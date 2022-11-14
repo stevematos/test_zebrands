@@ -1,7 +1,7 @@
 from models.base_model import TimestampedBase
 
 from sqlalchemy import Column
-from sqlalchemy import Integer, String, Boolean, Float
+from sqlalchemy import Integer, String, Boolean
 from sqlalchemy import Enum as SQAEnum
 
 from config.constants import RolEnum

@@ -57,5 +57,7 @@ def deleted_user(db: Session, email: str) -> DeleteUserResponse:
     deactivate_user(db, user_data.id)
     return DeleteUserResponse(
         email=user_data.email,
+        full_name=user_data.full_name,
+        rol=user_data.rol.value,
         message="User deleted successfully"
     )

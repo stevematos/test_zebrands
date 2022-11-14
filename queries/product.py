@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.product import Product
+from models.product import Product, ProductTracking
 
 
 def get_product_by_sku(db: Session, sku: str) -> Product:
@@ -23,3 +23,10 @@ def delete_product(db: Session, _id: int):
     db.query(Product).filter(Product.id == _id).delete()
     db.commit()
     db.flush()
+
+
+def create_product_tacking(db: Session, product_tracking: ProductTracking) -> ProductTracking:
+    db.add(product_tracking)
+    db.commit()
+    db.refresh(product_tracking)
+    return product_tracking
