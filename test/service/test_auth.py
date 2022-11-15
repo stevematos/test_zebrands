@@ -5,9 +5,9 @@ from pydantic import SecretStr
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 
-from config.exceptions import UserIncorrect, UserNotFound
-from models import User
-from services.auth import get_session_token
+from app.config.exceptions import UserIncorrect, UserNotFound
+from app.models import User
+from app.services.auth import get_session_token
 
 
 @pytest.mark.parametrize(
