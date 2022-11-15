@@ -1,10 +1,9 @@
-from models.base_model import TimestampedBase
-
-from sqlalchemy import Column
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Boolean, Column
 from sqlalchemy import Enum as SQAEnum
+from sqlalchemy import Integer, String
 
 from config.constants import RolEnum
+from models.base_model import TimestampedBase
 
 
 class User(TimestampedBase):

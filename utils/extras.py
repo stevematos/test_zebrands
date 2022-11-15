@@ -1,4 +1,3 @@
-
 def clean_dict(data: dict) -> dict:
     update_data = {}
     for key, value in data.items():
@@ -12,4 +11,3 @@ def diff_dict(dict1: dict, dict2: dict):
     set2 = set(dict2.items())
 
     return dict(set2 - set1)
-

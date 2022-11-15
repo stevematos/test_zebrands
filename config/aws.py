@@ -1,7 +1,8 @@
-from botocore.client import BaseClient
+import logging
+
 # from botocore.exceptions import ClientError
 from boto3 import client
-import logging
+from botocore.client import BaseClient
 
 
 def get_client(
@@ -13,7 +14,8 @@ def get_client(
 ) -> BaseClient:
     if endpoint_url:
         logging.debug(
-            f"Using specific endpoint url for AWS service. [service={service}, endpoint_url={endpoint_url}]"
+            f"Using specific endpoint url for AWS service. "
+            f"[service={service}, endpoint_url={endpoint_url}]"
         )
         return client(
             service,
@@ -24,7 +26,8 @@ def get_client(
 
     if region:
         logging.debug(
-            f"Using specific region for AWS service. [service={service}, region={region}]"
+            f"Using specific region for AWS service. "
+            f"[service={service}, region={region}]"
         )
         return client(
             service,
@@ -33,11 +36,11 @@ def get_client(
             aws_secret_access_key=aws_secret_access_key,
         )
 
-    logging.debug(f"Using default endpoint url for AWS service. [service={service}]")
+    logging.debug(
+        f"Using default endpoint url for AWS service. " f"[service={service}]"
+    )
     return client(
         service,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
     )
-
-

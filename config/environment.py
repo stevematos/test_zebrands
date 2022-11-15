@@ -1,5 +1,5 @@
-from functools import lru_cache
 import os
+from functools import lru_cache
 
 from pydantic import BaseSettings
 
@@ -11,17 +11,17 @@ def get_env_filename():
 
 
 class EnvironmentSettings(BaseSettings):
-    API_VERSION: str
-    APP_NAME: str
-    DATABASE_DIALECT: str
-    DATABASE_HOSTNAME: str
-    DATABASE_NAME: str
-    DATABASE_PASSWORD: str
-    DATABASE_PORT: int
-    DATABASE_USERNAME: str
-    DEBUG_MODE: bool
-    MINUTES_PER_SESSION: float
-    JWT_KEY: str
+    API_VERSION: str = ""
+    APP_NAME: str = ""
+    DATABASE_DIALECT: str = ""
+    DATABASE_HOSTNAME: str = ""
+    DATABASE_NAME: str = ""
+    DATABASE_PASSWORD: str = ""
+    DATABASE_PORT: int = None
+    DATABASE_USERNAME: str = ""
+    DEBUG_MODE: bool = False
+    MINUTES_PER_SESSION: float = 1000
+    JWT_KEY: str = ""
     JWT_ENCRYPT_ALGO: str = "HS256"
     AWS_SES_ENDPOINT_URL: str = None
 
@@ -30,6 +30,16 @@ class EnvironmentSettings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-@lru_cache
-def config_env():
-    return EnvironmentSettings()
+API_VERSION = EnvironmentSettings().API_VERSION
+APP_NAME = EnvironmentSettings().APP_NAME
+DATABASE_DIALECT = EnvironmentSettings().DATABASE_DIALECT
+DATABASE_HOSTNAME = EnvironmentSettings().DATABASE_HOSTNAME
+DATABASE_NAME = EnvironmentSettings().DATABASE_NAME
+DATABASE_PASSWORD = EnvironmentSettings().DATABASE_PASSWORD
+DATABASE_PORT = EnvironmentSettings().DATABASE_PORT
+DATABASE_USERNAME = EnvironmentSettings().DATABASE_USERNAME
+DEBUG_MODE = EnvironmentSettings().DEBUG_MODE
+MINUTES_PER_SESSION = EnvironmentSettings().MINUTES_PER_SESSION
+JWT_KEY = EnvironmentSettings().JWT_KEY
+JWT_ENCRYPT_ALGO = EnvironmentSettings().JWT_ENCRYPT_ALGO
+AWS_SES_ENDPOINT_URL = EnvironmentSettings().AWS_SES_ENDPOINT_URL

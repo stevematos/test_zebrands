@@ -1,12 +1,11 @@
-from typing import Optional
 from pydantic import BaseModel
 
 
 class ProductSchema(BaseModel):
     sku: str
-    name:  Optional[str] = None
-    price: Optional[float] = None
-    brand: Optional[str] = None
+    name: str | None = None
+    price: float | None = None
+    brand: str | None = None
 
 
 class ProductChange(BaseModel):

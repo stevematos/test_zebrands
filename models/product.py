@@ -1,7 +1,14 @@
-from models.base_model import TimestampedBase, EntityBase
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    func,
+)
 
-from sqlalchemy import Column, ForeignKey, func
-from sqlalchemy import Integer, String, Float, DateTime
+from models.base_model import EntityBase, TimestampedBase
 
 
 class Product(TimestampedBase):
@@ -18,7 +25,7 @@ class Product(TimestampedBase):
             "name": self.name.__str__(),
             "sku": self.sku.__str__(),
             "price": self.price.__str__(),
-            "brand": self.brand.__str__()
+            "brand": self.brand.__str__(),
         }
 
 
@@ -29,6 +36,8 @@ class ProductTracking(EntityBase):
     user_id = Column(Integer, ForeignKey("user.id"))
     product_id = Column(Integer, ForeignKey("product.id"))
     created_at = Column(
-        DateTime, nullable=False, default=func.now(), server_default=func.now()
+        DateTime,
+        nullable=False,
+        default=func.now(),
+        server_default=func.now(),
     )
-

@@ -1,7 +1,6 @@
 from strawberry import type, union
 
 
-
 @type
 class LoginSuccess:
     session_token: str
@@ -13,6 +12,3 @@ class LoginError:
 
 
 LoginResult = union("LoginResult", (LoginSuccess, LoginError))
-
-
-

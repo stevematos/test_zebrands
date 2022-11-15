@@ -1,6 +1,6 @@
 from pydantic import SecretStr
 
-from utils.auth import hash_password, check_password_hash
+from utils.auth import check_password_hash, hash_password
 
 
 def test_password_hashing():

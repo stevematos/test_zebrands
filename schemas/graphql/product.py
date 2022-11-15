@@ -1,6 +1,4 @@
-from typing import Optional
-
-from strawberry import type, input, union
+from strawberry import input, type, union
 
 
 @input
@@ -17,9 +15,9 @@ class CreateProductInput(ProductInput):
 
 @input
 class UpdateProductInput(ProductInput):
-    name: Optional[str] = None
-    price: Optional[float] = None
-    brand: Optional[str] = None
+    name: str | None = None
+    price: float | None = None
+    brand: str | None = None
 
 
 @type
@@ -55,7 +53,15 @@ class ProductError:
     message: str
 
 
-GetProductResult = union("GetProductResult", (GetProductResponse, ProductError))
-CreateProductResult = union("CreateProductResult", (CreateProductResponse, ProductError))
-UpdateProductResult = union("UpdateProductResult", (UpdateProductResponse, ProductError))
-DeleteProductResult = union("DeleteProductResult", (DeleteProductResponse, ProductError))
+GetProductResult = union(
+    "GetProductResult", (GetProductResponse, ProductError)
+)
+CreateProductResult = union(
+    "CreateProductResult", (CreateProductResponse, ProductError)
+)
+UpdateProductResult = union(
+    "UpdateProductResult", (UpdateProductResponse, ProductError)
+)
+DeleteProductResult = union(
+    "DeleteProductResult", (DeleteProductResponse, ProductError)
+)

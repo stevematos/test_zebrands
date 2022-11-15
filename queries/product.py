@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+
 from models.product import Product, ProductTracking
 
 
@@ -25,7 +26,9 @@ def delete_product(db: Session, _id: int):
     db.flush()
 
 
-def create_product_tacking(db: Session, product_tracking: ProductTracking) -> ProductTracking:
+def create_product_tacking(
+    db: Session, product_tracking: ProductTracking
+) -> ProductTracking:
     db.add(product_tracking)
     db.commit()
     db.refresh(product_tracking)

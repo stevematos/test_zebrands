@@ -25,5 +25,5 @@ def update_user(db: Session, _id: int, user: User):
 
 
 def deactivate_user(db: Session, _id: int):
-    db.query(User).filter(User.id == _id).update({'is_active': False})
+    db.query(User).filter(User.id == _id).update({"is_active": False})
     db.commit()

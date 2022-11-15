@@ -1,7 +1,6 @@
 from enum import Enum
-from typing import Optional
 
-from strawberry import input, type, enum, union
+from strawberry import enum, input, type, union
 
 
 @enum
@@ -23,9 +22,9 @@ class CreateUserInput(UserInput):
 
 
 class UpdateUserInput(UserInput):
-    password: Optional[str] = None
-    full_name: Optional[str] = None
-    rol: Optional[RolEnumInput] = None
+    password: str | None = None
+    full_name: str | None = None
+    rol: RolEnumInput | None = None
 
 
 @type

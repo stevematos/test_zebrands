@@ -1,16 +1,9 @@
-from schemas.graphql.auth import (
-    LoginResult,
-    LoginError,
-    LoginSuccess,
-)
+from strawberry import mutation, type
 from strawberry.types import Info
-from strawberry import (
-    type,
-    mutation,
-)
 
+from config.exceptions import UserIncorrect, UserNotFound
+from schemas.graphql.auth import LoginError, LoginResult, LoginSuccess
 from services.auth import get_session_token
-from config.exceptions import UserNotFound, UserIncorrect
 
 
 @type
@@ -18,7 +11,10 @@ class MutationAuth:
     @mutation
     def login(self, info: Info, email: str, password: str) -> LoginResult:
         try:
-            return LoginSuccess(session_token=get_session_token(info.context['db'], email, password))
+            return LoginSuccess(
+                session_token=get_session_token(
+                    info.context["db"], email, password
+                )
+            )
         except (UserNotFound, UserIncorrect) as e:
             return LoginError(message=e)
-

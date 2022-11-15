@@ -1,8 +1,0 @@
-fastapi
-sqlalchemy
-strawberry-graphql[fastapi]
-uvicorn[standard]
-bcrypt
-pytest
-pyjwt
-boto3

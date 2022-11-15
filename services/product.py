@@ -1,13 +1,23 @@
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm import Session
 
-from models import Product, ProductTracking
-from queries.product import get_product_by_sku, create_product, update_product, delete_product, create_product_tacking
-from queries.user import get_user_by_email
-from schemas.graphql.product import CreateProductResponse, UpdateProductResponse, DeleteProductResponse, \
-    GetProductResponse
-from schemas.pydantic.product import ProductSchema, ProductChange
 from config.exceptions import ProductDuplicated, ProductNotFound
+from models import Product, ProductTracking
+from queries.product import (
+    create_product,
+    create_product_tacking,
+    delete_product,
+    get_product_by_sku,
+    update_product,
+)
+from queries.user import get_user_by_email
+from schemas.graphql.product import (
+    CreateProductResponse,
+    DeleteProductResponse,
+    GetProductResponse,
+    UpdateProductResponse,
+)
+from schemas.pydantic.product import ProductChange, ProductSchema
 from services.email import send_plain_email
 from utils.email import generate_html_change_product
 from utils.extras import clean_dict, diff_dict
@@ -16,7 +26,11 @@ from utils.extras import clean_dict, diff_dict
 def _send_email_for_change_product(product_change: ProductChange):
     body = generate_html_change_product(product_change)
     print(body)
-    send_plain_email(product_change.email, f"Change in Product with sku {product_change.sku}", body)
+    send_plain_email(
+        product_change.email,
+        f"Change in Product with sku {product_change.sku}",
+        body,
+    )
 
 
 def get_product(db: Session, sku: str, user_id: int) -> GetProductResponse:
@@ -28,11 +42,7 @@ def get_product(db: Session, sku: str, user_id: int) -> GetProductResponse:
     user_data = get_user_by_email(db, user_id)
 
     create_product_tacking(
-        db,
-        ProductTracking(
-            user_id=user_data.id,
-            product_id=product_data.id
-        )
+        db, ProductTracking(user_id=user_data.id, product_id=product_data.id)
     )
 
     return GetProductResponse(**product_data.normalize())
@@ -50,7 +60,9 @@ def add_product(db: Session, product: ProductSchema) -> CreateProductResponse:
     return CreateProductResponse(**product_data.normalize())
 
 
-def updated_product(db: Session, product: ProductSchema, email: str, user_id: int) -> UpdateProductResponse:
+def updated_product(
+    db: Session, product: ProductSchema, email: str, user_id: int
+) -> UpdateProductResponse:
     try:
         product_data = get_product_by_sku(db, product.sku)
     except NoResultFound:
@@ -66,7 +78,7 @@ def updated_product(db: Session, product: ProductSchema, email: str, user_id: in
                 user_id=user_id,
                 sku=product_data.sku,
                 product_id=product_data.id,
-                product_change=diff_data
+                product_change=diff_data,
             )
         )
 
@@ -82,6 +94,5 @@ def deleted_product(db: Session, sku: str) -> DeleteProductResponse:
 
     delete_product(db, product_data.id)
     return DeleteProductResponse(
-        **product_data.normalize(),
-        message="Product deleted successfully"
+        **product_data.normalize(), message="Product deleted successfully"
     )
