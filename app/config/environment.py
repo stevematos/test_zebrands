@@ -24,6 +24,9 @@ class EnvironmentSettings(BaseSettings):
     JWT_KEY: str = ""
     JWT_ENCRYPT_ALGO: str = "HS256"
     AWS_SES_ENDPOINT_URL: str = None
+    AWS_REGION: str = None
+    AWS_ACCESS_KEY: str = None
+    AWS_SECRET_ACCESS_KEY: str = None
 
     class Config:
         env_file = get_env_filename()
@@ -43,3 +46,6 @@ MINUTES_PER_SESSION = EnvironmentSettings().MINUTES_PER_SESSION
 JWT_KEY = EnvironmentSettings().JWT_KEY
 JWT_ENCRYPT_ALGO = EnvironmentSettings().JWT_ENCRYPT_ALGO
 AWS_SES_ENDPOINT_URL = EnvironmentSettings().AWS_SES_ENDPOINT_URL
+AWS_REGION = EnvironmentSettings().AWS_REGION
+AWS_ACCESS_KEY = EnvironmentSettings().AWS_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = EnvironmentSettings().AWS_SECRET_ACCESS_KEY

@@ -7,7 +7,7 @@ from queries.product import (
     get_product_by_sku,
     update_product,
 )
-from queries.user import get_user_by_email
+from queries.user import get_user_by_id
 from schemas.graphql.product import (
     CreateProductResponse,
     DeleteProductResponse,
@@ -38,7 +38,7 @@ def get_product(db: Session, sku: str, user_id: int) -> GetProductResponse:
     except NoResultFound:
         raise ProductNotFound(sku)
 
-    user_data = get_user_by_email(db, user_id)
+    user_data = get_user_by_id(db, user_id)
 
     create_product_tacking(
         db, ProductTracking(user_id=user_data.id, product_id=product_data.id)

@@ -1,16 +1,20 @@
 import logging
 
-# from botocore.exceptions import ClientError
 from boto3 import client
 from botocore.client import BaseClient
+from config.environment import (
+    AWS_ACCESS_KEY,
+    AWS_REGION,
+    AWS_SECRET_ACCESS_KEY,
+)
 
 
 def get_client(
     service: str,
     endpoint_url: str | None = None,
-    region: str | None = None,
-    aws_access_key_id: str | None = None,
-    aws_secret_access_key: str | None = None,
+    region: str | None = AWS_REGION,
+    aws_access_key_id: str | None = AWS_ACCESS_KEY,
+    aws_secret_access_key: str | None = AWS_SECRET_ACCESS_KEY,
 ) -> BaseClient:
     if endpoint_url:
         logging.debug(

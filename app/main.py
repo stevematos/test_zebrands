@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from config.database import get_db_connection, init
 from config.environment import API_VERSION, APP_NAME, DEBUG_MODE
 from fastapi import Depends, FastAPI, Header
