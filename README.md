@@ -95,7 +95,7 @@ my_store
 
 In graphql the documentation is in the same console so if you want to review the doc, just go to the endpoint http://localhost:8000/graphql
 
-But there is a [documentation on Postman](documentation/zebrands_test.postman_collection.json) if you want to check it out.
+But there is a [documentation on Postman](documentation/zebrands_test.postman_collection.json) if you want to check it out. Remember to add the environment variables in postman ( {{session-token}}, {{base_url_graphql}} )
 
 ### Authentication
 
