@@ -7,7 +7,7 @@ from queries.product import (
     get_product_by_sku,
     update_product,
 )
-from queries.user import get_user_by_id
+from queries.user import get_user_by_id, get_users_admin
 from schemas.graphql.product import (
     CreateProductResponse,
     DeleteProductResponse,
@@ -24,9 +24,9 @@ from utils.extras import clean_dict, diff_dict
 
 def _send_email_for_change_product(product_change: ProductChange):
     body = generate_html_change_product(product_change)
-    print(body)
+
     send_plain_email(
-        product_change.email,
+        product_change.emails,
         f"Change in Product with sku {product_change.sku}",
         body,
     )
@@ -73,7 +73,7 @@ def updated_product(
     if diff_data:
         _send_email_for_change_product(
             ProductChange(
-                email=email,
+                emails=[user.email for user in get_users_admin(db)],
                 user_id=user_id,
                 sku=product_data.sku,
                 product_id=product_data.id,

@@ -1,12 +1,11 @@
 from datetime import datetime
 
-import jwt
 from config.constants import RolEnum
 from config.environment import JWT_KEY
+from jwt import DecodeError, ExpiredSignatureError, InvalidSignatureError
 from queries.user import get_user_by_email
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
-from strawberry.types import Info
 from utils.tokens import decode
 
 
@@ -22,9 +21,8 @@ def _validate_user(db: Session, payload: dict) -> bool:
     return True
 
 
-def _save_data_info(info: Info, decoded_jwt: dict):
-    info.context["email"] = decoded_jwt["email"]
-    info.context["user_id"] = decoded_jwt["user_id"]
+def _save_data_info(decoded_jwt: dict):
+    return {"email": decoded_jwt["email"], "user_id": decoded_jwt["user_id"]}
 
 
 def _is_admin(db: Session, email: str) -> bool:
@@ -35,33 +33,29 @@ def _is_admin(db: Session, email: str) -> bool:
     return False
 
 
-def authenticate(info: Info, session_token: str) -> bool:
+def authenticate(context: dict, session_token: str) -> (bool, dict):
     try:
         decoded_jwt = decode(session_token, JWT_KEY)
     except (
-        jwt.ExpiredSignatureError,
-        jwt.InvalidSignatureError,
-        jwt.InvalidSignatureError,
-        jwt.DecodeError,
+        ExpiredSignatureError,
+        InvalidSignatureError,
+        DecodeError,
     ):
-        return False
+        return False, {}
 
-    if not _validate_user(info.context["db"], decoded_jwt):
-        return False
+    if not _validate_user(context["db"], decoded_jwt):
+        return False, {}
 
-    _save_data_info(info, decoded_jwt)
-
-    return True
+    return True, _save_data_info(decoded_jwt)
 
 
 def is_admin(db: Session, session_token: str) -> bool:
     try:
         decoded_jwt = decode(session_token, JWT_KEY)
     except (
-        jwt.ExpiredSignatureError,
-        jwt.InvalidSignatureError,
-        jwt.InvalidSignatureError,
-        jwt.DecodeError,
+        ExpiredSignatureError,
+        InvalidSignatureError,
+        DecodeError,
     ):
         return False
 

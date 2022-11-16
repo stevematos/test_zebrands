@@ -23,7 +23,7 @@ class Product(TimestampedBase):
         return {
             "name": self.name.__str__(),
             "sku": self.sku.__str__(),
-            "price": self.price.__str__(),
+            "price": self.price,
             "brand": self.brand.__str__(),
         }
 

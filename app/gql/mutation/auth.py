@@ -16,4 +16,4 @@ class MutationAuth:
                 )
             )
         except (UserNotFound, UserIncorrect) as e:
-            return LoginError(message=e)
+            return LoginError(message=e.__str__())

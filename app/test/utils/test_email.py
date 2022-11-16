@@ -1,10 +1,10 @@
-from app.schemas.pydantic.product import ProductChange
-from app.utils.email import generate_html_change_product
+from schemas.pydantic.product import ProductChange
+from utils.email import generate_html_change_product
 
 
 def test_generate_html_change_product():
     product_change = ProductChange(
-        email="test",
+        emails=["test@email", "test2@example.com"],
         user_id=1,
         sku="TEST123",
         product_id=1,

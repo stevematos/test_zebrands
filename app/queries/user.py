@@ -1,9 +1,16 @@
+from config.constants import RolEnum
 from models.users import User
 from sqlalchemy.orm import Session
 
 
 def get_user_by_email(db: Session, email: str) -> User:
     return db.query(User).filter(User.email == email, User.is_active).one()
+
+
+def get_users_admin(db: Session) -> list[User]:
+    return (
+        db.query(User).filter(User.is_active, User.rol == RolEnum.admin).all()
+    )
 
 
 def get_user_by_id(db: Session, _id: int) -> User:

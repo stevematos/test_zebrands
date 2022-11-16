@@ -11,7 +11,10 @@ CHARSET = "UTF-8"
 
 
 def send_plain_email(
-    email: str, subject: str, body: str, ses_client: BaseClient | None = None
+    emails: list[str],
+    subject: str,
+    body: str,
+    ses_client: BaseClient | None = None,
 ) -> bool:
     sender = "Admin <steve.matos.1998@gmail.com>"
     if not ses_client:
@@ -19,28 +22,26 @@ def send_plain_email(
             service="ses", endpoint_url=AWS_SES_ENDPOINT_URL
         )
 
-    try:
-        ses_client.send_email(
-            Destination={
-                "ToAddresses": [
-                    email,
-                ],
-            },
-            Message={
-                "Body": {
-                    "Html": {
+    for email in emails:
+        try:
+            ses_client.send_email(
+                Destination={
+                    "ToAddresses": [email],
+                },
+                Message={
+                    "Body": {
+                        "Html": {
+                            "Charset": CHARSET,
+                            "Data": body,
+                        }
+                    },
+                    "Subject": {
                         "Charset": CHARSET,
-                        "Data": body,
-                    }
+                        "Data": subject,
+                    },
                 },
-                "Subject": {
-                    "Charset": CHARSET,
-                    "Data": subject,
-                },
-            },
-            Source=sender,
-        )
-    except ClientError as error:
-        logger.error(f"Error sending plain e-mail. [error={error}]")
-        return False
+                Source=sender,
+            )
+        except ClientError as error:
+            logger.error(f"Error sending plain e-mail. [error={error}]")
     return True

@@ -9,7 +9,7 @@ class ProductSchema(BaseModel):
 
 
 class ProductChange(BaseModel):
-    email: str
+    emails: list[str]
     sku: str
     user_id: int
     product_id: int

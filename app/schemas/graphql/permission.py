@@ -10,7 +10,12 @@ class IsAuthenticated(BasePermission):
 
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
         if session_token := info.context["session_token"]:
-            return authenticate(info, session_token)
+            is_authenticate, context_save = authenticate(
+                info.context, session_token
+            )
+            if is_authenticate:
+                info.context.update(context_save)
+                return True
         return False
 
 

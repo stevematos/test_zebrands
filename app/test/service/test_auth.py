@@ -1,13 +1,12 @@
 from unittest.mock import create_autospec, patch
 
 import pytest
+from config.exceptions import UserIncorrect, UserNotFound
+from models import User
 from pydantic import SecretStr
+from services.auth import get_session_token
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
-
-from app.config.exceptions import UserIncorrect, UserNotFound
-from app.models import User
-from app.services.auth import get_session_token
 
 
 @pytest.mark.parametrize(

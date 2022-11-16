@@ -1,4 +1,4 @@
-from app.utils import decode, encode
+from utils.tokens import decode, encode
 
 
 def test_encode_and_decode():

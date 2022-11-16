@@ -1,4 +1,4 @@
-from app.utils import clean_dict, diff_dict
+from utils.extras import clean_dict, diff_dict
 
 
 def test_password_hashing():
