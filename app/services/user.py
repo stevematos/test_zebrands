@@ -55,7 +55,9 @@ def updated_user(db: Session, user: UserSchema) -> UpdateUserResponse:
 
     update_user(db, user_data.id, User(**update_data))
     return UpdateUserResponse(
-        full_name=user_data.full_name, rol=user_data.rol.value
+        email=user.email,
+        full_name=user_data.full_name,
+        rol=user_data.rol.value,
     )
 
 

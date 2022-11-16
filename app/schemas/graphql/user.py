@@ -17,10 +17,12 @@ class UserInput:
     rol: RolEnumInput
 
 
+@input
 class CreateUserInput(UserInput):
     pass
 
 
+@input
 class UpdateUserInput(UserInput):
     password: str | None = None
     full_name: str | None = None

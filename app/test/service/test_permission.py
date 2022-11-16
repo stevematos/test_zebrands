@@ -2,6 +2,7 @@ from unittest.mock import create_autospec, patch
 
 import pytest
 from config.constants import RolEnum
+from config.environment import JWT_KEY
 from jwt import DecodeError, ExpiredSignatureError, InvalidSignatureError
 from models import User
 from services.permission import _is_admin, authenticate, is_admin
@@ -74,7 +75,7 @@ def test_authenticate(
         expected = (False, {})
         mock__validate_user.assert_not_called()
     else:
-        mock_decode.assert_called_once_with(session_token, "")
+        mock_decode.assert_called_once_with(session_token, JWT_KEY)
         mock__validate_user.assert_called_once_with(db, decode_jwt)
 
         if not validate_user:
@@ -135,7 +136,7 @@ def testis_admin(
         expected = False
         mock__is_admin.assert_not_called()
     else:
-        mock_decode.assert_called_once_with(session_token, "")
+        mock_decode.assert_called_once_with(session_token, JWT_KEY)
         mock__is_admin.assert_called_once_with(db, decode_jwt["email"])
 
         if not _is_admin_value:
