@@ -15,6 +15,8 @@ The project this deployed in http://18.217.21.15:8000/graphql
 ---
 - Docker installed
 
+- Remember to copy the env.test to .env ( in folder app ) to add environment variables to the application.
+
 ## Installation and execution
 ---
 Clone or Fork the project.
