@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "b1266718-5b90-4a0d-84cb-31ac905bfee8",
+		"name": "zebrands_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11433262"
+	},
+	"item": [
+		{
+			"name": "Mutation",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "add user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  addUser(\n    user: {\n      email: \"test@example.com\",\n      password: \"test\",\n      fullName: \"John Doe\",\n      rol: anonymous,      \n    }\n  ){\n    ... on CreateUserResponse{\n    \temail\n      fullName\n      rol\n    }\n    ... on UserError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  updateUser(\n    user: {\n      email: \"test@example.com\"\n      fullName: \"test name\"\n    }\n  ){\n    ... on UpdateUserResponse{\n      fullName\n      rol\n    }\n    \n    ... on UserError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  deleteUser(\n    email: \"test@example.com\"\n  ){\n    ... on DeleteUserResponse{\n      email\n      message\n    }\n    \n    ... on UserError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "add_product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  addProduct(\n    product: {\n      sku: \"TT123SSS\",\n      name: \"product\",\n      price: 32,\n      brand: \"test brand\",      \n    }\n  ){\n    ... on CreateProductResponse {\n      sku\n      name\n      price\n    }\n    ... on ProductError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  updateProduct(\n    product: {\n      sku: \"TT123SSS\",\n      name: \"test\",\n      price: 13,\n      brand: \"test brand\",      \n    }\n  ){\n    ... on UpdateProductResponse {\n      name\n      price\n      brand\n    }\n    ... on ProductError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "session-token",
+										"value": "{{session-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\n  deleteProduct(\n    sku: \"TT123SSS\"\n  ){\n    ... on DeleteProductResponse{\n      sku\n      message\n    }\n    \n    ... on ProductError{\n      message\n    }\n  }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{base_url_graphql}}",
+									"host": [
+										"{{base_url_graphql}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "q23123",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation{\n  login(email: \"steve.matos.1998@gmail.com\",\n      password: \"test\"){\n    ... on LoginSuccess{\n      sessionToken\n    }\n    ... on LoginError{\n      message\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{base_url_graphql}}",
+							"host": [
+								"{{base_url_graphql}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "get Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "session-token",
+								"value": "{{session-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n  getProduct(\n    sku: \"TT123SSS\"\n  ){\n    ... on GetProductResponse{\n      sku\n      name\n      brand\n      price\n    }\n    \n    ... on ProductError{\n      message\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{base_url_graphql}}",
+							"host": [
+								"{{base_url_graphql}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
